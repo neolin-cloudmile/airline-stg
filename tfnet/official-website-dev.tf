@@ -54,3 +54,14 @@ resource "google_compute_firewall" "official-website-dev-allow-ssh" {
   target_tags = ["allow-ssh"]
   source_ranges = ["0.0.0.0/0"]
 }
+# Add the vm-bastionhost instance
+module "vm-bastionhost" {
+  source                 = "./bastionhost"
+  instance_name          = "vm-bastionhost"
+  instance_zone          = "asia-east1-a"
+  instance_type          = "n1-standard-2"
+  instance_imagetype     = "debian-cloud/debian-9"
+  instance_tags          = "allow-ssh"
+  instance_subnetwork    = "${google_compute_subnetwork.public-subnet-1.self_link}"
+  instance_subnetwork1   = "default"
+}
