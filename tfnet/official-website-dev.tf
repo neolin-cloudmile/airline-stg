@@ -65,3 +65,21 @@ module "vm-bastionhost" {
   instance_subnetwork    = "${google_compute_subnetwork.public-subnet-1.self_link}"
   instance_subnetwork1   = "default"
 }
+# Create container cluster - k8s
+data "google_client_config" "current" {}
+data "google_container_engine_versions" "default" {
+  zone = "asia-east1-a"
+}
+resource "google_container_cluster" "tf-gke-k8s-dev" {
+  name               = "tf-gke-k8s-dev"
+  zone               = "asia-east1-a"
+  initial_node_count = 3
+  min_master_version = "${data.google_container_engine_versions.default.latest_master_version}"
+  network            = "${google_compute_network.official-website-dev.name}"
+  subnetwork         = "${google_compute_subnetwork.private-subnet-k8s.name}"
+
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "sleep 90"
+  }
+}
