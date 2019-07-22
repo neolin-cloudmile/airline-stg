@@ -24,3 +24,4 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     subnetwork = "${var.instance_subnetwork1}"
   }
+}
