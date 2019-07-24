@@ -1,21 +1,30 @@
-variable "gke_name" {}
-variable "gke_location" {}
-variable "gke_init_node" {}
-variable "gke_network" {}
-variable "gke_subnetwork" {}
+variable "cluster_name" {}
+variable "cluster_location" {}
+variable "cluster_init_node" {}
+variable "cluster_network" {}
+variable "cluster_subnetwork" {}
+variable "cluster_secondary_rangename" {}
+variable "cluster_service_secondary_rangename" {}
 
 data "google_client_config" "current" {}
 data "google_container_engine_versions" "default" {
-  location = "${var.gke_location}"
+  location = "${var.cluster_location}"
 }
 resource "google_container_cluster" "tf-gke-k8s-dev" {
-  name         = "${var.gke_name}"
-  location     = "${var.gke_location}"
-  initial_node_count = "${var.gke_init_node}"
+  name         = "${var.cluster_name}"
+  location     = "${var.cluster_location}"
+  initial_node_count = "${var.cluster_init_node}"
   min_master_version = "${data.google_container_engine_versions.default.latest_master_version}"
-  network            = "${var.gke_network}"
-  subnetwork         = "${var.gke_subnetwork}"  
+  network            = "${var.cluster_network}"
+  subnetwork         = "${var.cluster_subnetwork}"  
 
+  private_cluster_config {
+    enable_private_nodes   = "true"
+  }
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "${var.cluster_secondary_rangename}"
+    services_secondary_range_name = "${var.cluster_service_secondary_rangename}"
+  }
   provisioner "local-exec" {
     when    = "destroy"
     command = "sleep 90"

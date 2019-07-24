@@ -42,6 +42,7 @@ resource "google_compute_subnetwork" "private-subnet-k8s" {
   network       = "${google_compute_network.official-website-dev.self_link}"
   ip_cidr_range = "10.240.76.0/23"
   private_ip_google_access = "true"
+  }
 }
 # Add a firewall rule to allow SSH traffic on official-website-dev
 resource "google_compute_firewall" "official-website-dev-allow-ssh" {
@@ -68,9 +69,11 @@ module "vm-bastionhost" {
 # Create container cluster - k8s
 module "tf-gke-k8s-dev" {
   source              = "./gke"
-  gke_name            = "tf-gke-k8s-dev"
-  gke_location        = "asia-east1-a"
-  gke_init_node       = "3"
-  gke_network         = "${google_compute_network.official-website-dev.name}"
-  gke_subnetwork      = "${google_compute_subnetwork.private-subnet-k8s.name}" 
+  cluster_name            = "tf-gke-k8s-dev"
+  cluster_location        = "asia-east1-a"
+  cluster_init_node       = "3"
+  cluster_network         = "${google_compute_network.official-website-dev.name}"
+  cluster_subnetwork      = "${google_compute_subnetwork.private-subnet-k8s.name}" 
+  cluster_secondary_rangename = "cluster-secondary-1"
+  cluster_service_secondary_rangename = "service-secondary-1"
 }
