@@ -20,7 +20,7 @@ resource "google_container_cluster" "tf-gke-k8s-dev" {
 
   private_cluster_config {
     enable_private_nodes   = "true"
-    master_ipv4_cidr_block = "10.128.0.0/28"
+    master_ipv4_cidr_block = "172.16.0.0/28"
   }
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.cluster_secondary_rangename}"
