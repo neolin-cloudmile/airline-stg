@@ -44,11 +44,11 @@ resource "google_compute_subnetwork" "private-subnet-k8s" {
   private_ip_google_access = "true"
   
   secondary_ip_range {
-    range_name = "cluster-secondary-1"
-    ip_cidr_range = "172.16.0.0/15"
+    range_name = "gke-cluster-pod-1"
+    ip_cidr_range = "10.0.0.0/15"
   }
   secondary_ip_range {
-    range_name = "service-secondary-1"
+    range_name = "gke-cluster-services-1"
     ip_cidr_range = "10.4.0.0/19"
   }
 }
