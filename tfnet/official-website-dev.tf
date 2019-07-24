@@ -72,7 +72,7 @@ module "vm-bastionhost" {
   instance_imagetype     = "debian-cloud/debian-9"
   instance_tags          = "allow-ssh"
   instance_subnetwork    = "${google_compute_subnetwork.public-subnet-1.self_link}"
-  instance_subnetwork1   = "default"
+  instance_subnetwork1   = "${google_compute_subnetwork.private-subnet-1.self_link}"
 }
 # Create container cluster - k8s
 module "tf-gke-k8s-dev" {
