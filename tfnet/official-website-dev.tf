@@ -44,11 +44,11 @@ resource "google_compute_subnetwork" "private-subnet-k8s" {
   private_ip_google_access = "true"
   
   secondary_ip_range {
-    range_name = "gke-cluster-pod-1"
+    range_name = "official-website-dev-cluster-pod-1"
     ip_cidr_range = "10.0.0.0/15"
   }
   secondary_ip_range {
-    range_name = "gke-cluster-services-1"
+    range_name = "official-website-dev-cluster-services-1"
     ip_cidr_range = "10.4.0.0/19"
   }
 }
@@ -63,6 +63,25 @@ resource "google_compute_firewall" "official-website-dev-allow-ssh" {
   target_tags = ["allow-ssh"]
   source_ranges = ["0.0.0.0/0"]
 }
+# Add a firewall rule to allow SSH traffic on official-website-dev
+resource "google_compute_firewall" "official-website-dev-allow-redis" {
+  name    = "official-website-dev-allow-redis"
+  network = "${google_compute_network.official-website-dev.self_link}"
+  allow {
+    protocol = "tcp"
+    ports    = ["6379"]
+  }
+  source_ranges = ["0.0.0.0/0"]
+}
+# Add a firewall rule to allow ICMP traffic on official-website-dev
+resource "google_compute_firewall" "official-website-dev-allow-icmp" {
+  name = "official-website-dev-allow-icmp"
+  network = "${google_compute_network.official-website-dev.self_link}"
+  allow {
+      protocol = "icmp"
+  }
+  source_ranges = ["0.0.0.0/0"]
+}
 # Add the vm-bastionhost instance
 module "vm-bastionhost" {
   source                 = "./bastionhost"
@@ -75,13 +94,13 @@ module "vm-bastionhost" {
   instance_subnetwork1   = "default"
 }
 # Create container cluster - k8s
-module "tf-gke-k8s-dev" {
+module "official-website-dev-cluster" {
   source                              = "./gke"
-  cluster_name                        = "tf-gke-k8s-dev"
+  cluster_name                        = "official-website-dev-cluster"
   cluster_location                    = "asia-east1"
   cluster_init_node                   = "3"
   cluster_network                     = "${google_compute_network.official-website-dev.name}"
   cluster_subnetwork                  = "${google_compute_subnetwork.private-subnet-k8s.name}" 
-  cluster_secondary_rangename         = "gke-cluster-pod-1"
-  cluster_service_secondary_rangename = "gke-cluster-services-1"
+  cluster_secondary_rangename         = "official-website-dev-cluster-pod-1"
+  cluster_service_secondary_rangename = "official-website-dev-cluster-services-1"
 }
