@@ -63,25 +63,6 @@ resource "google_compute_firewall" "official-website-dev-allow-ssh" {
   target_tags = ["allow-ssh"]
   source_ranges = ["0.0.0.0/0"]
 }
-# Add a firewall rule to allow SSH traffic on official-website-dev
-resource "google_compute_firewall" "official-website-dev-allow-redis" {
-  name    = "official-website-dev-allow-redis"
-  network = "${google_compute_network.official-website-dev.self_link}"
-  allow {
-    protocol = "tcp"
-    ports    = ["6379"]
-  }
-  source_ranges = ["0.0.0.0/0"]
-}
-# Add a firewall rule to allow ICMP traffic on official-website-dev
-resource "google_compute_firewall" "official-website-dev-allow-icmp" {
-  name = "official-website-dev-allow-icmp"
-  network = "${google_compute_network.official-website-dev.self_link}"
-  allow {
-      protocol = "icmp"
-  }
-  source_ranges = ["0.0.0.0/0"]
-}
 # Add the vm-bastionhost instance
 module "vm-bastionhost" {
   source                 = "./bastionhost"
