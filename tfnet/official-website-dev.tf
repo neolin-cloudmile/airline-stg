@@ -89,8 +89,11 @@ module "official-website-dev-cluster" {
 module "memoryore-instance" {
   source = "./redis"
   redis_name = "myredis-asia-east1-1"
+  redis_tier = "STANDARD_HA"
   redis_region = "asia-east1"
-  redis_memory_size = 2
+  redis_zone = "asia-east1-a"
+  redis_alt_zone = "asia-east1-b"
+  redis_memory_size = 4 
   redis_auth_network = "${google_compute_network.official-website-dev.self_link}"
-  redis_version = "redis_4_0"
+  redis_version = "REDIS_4_0"
 }
