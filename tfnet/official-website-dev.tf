@@ -85,3 +85,12 @@ module "official-website-dev-cluster" {
   cluster_secondary_rangename         = "official-website-dev-cluster-pod-1"
   cluster_service_secondary_rangename = "official-website-dev-cluster-services-1"
 }
+# Create memorystore - redis
+module "memoryore-instance" {
+  source = "./redis"
+  redis_name = "myredis-asia-east1-1"
+  redis_region = "asia-east1"
+  redis_memory_size = 2
+  redis_auth_network = "${google_compute_network.official-website-dev.self_link}"
+  redis_version = "redis_4_0"
+}
