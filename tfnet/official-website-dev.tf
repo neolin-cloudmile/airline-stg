@@ -78,7 +78,7 @@ module "vm-bastionhost" {
 module "tf-gke-k8s-dev" {
   source                              = "./gke"
   cluster_name                        = "tf-gke-k8s-dev"
-  cluster_location                    = "asia-east1-a"
+  cluster_location                    = "asia-east1"
   cluster_init_node                   = "3"
   cluster_network                     = "${google_compute_network.official-website-dev.name}"
   cluster_subnetwork                  = "${google_compute_subnetwork.private-subnet-k8s.name}" 
