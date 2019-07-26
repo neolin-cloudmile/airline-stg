@@ -21,7 +21,7 @@ https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips<br />
 
 Step.5 Create Memorystore for Redis<br />
 
-Creating and managing Redis instances
+Creating and managing Redis instances<br />
 https://cloud.google.com/memorystore/docs/redis/creating-managing-instances<br />
 
 Step.6 Connecting a Redis instances from a Kubernetes Engine Closuter<br />
