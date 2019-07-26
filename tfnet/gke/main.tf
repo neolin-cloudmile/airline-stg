@@ -22,6 +22,14 @@ resource "google_container_cluster" "tf-gke-k8s-dev" {
     enable_private_nodes   = "true"
     master_ipv4_cidr_block = "172.16.0.0/28"
   }
+  master_authorized_networks_config {
+    cidr_blocks {
+      # In your Cloud Shell command-line window, use dig to find the external IP address of your Cloud Shell
+      cidr_block   = "35.234.46.81/32"
+      display_name = "all-for-testing"
+    }
+  }
+  # ip_allocation_policy.use_ip_aliases defaults to true, since we define the block `ip_allocation_policy`
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.cluster_secondary_rangename}"
     services_secondary_range_name = "${var.cluster_service_secondary_rangename}"
