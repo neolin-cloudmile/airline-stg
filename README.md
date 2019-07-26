@@ -16,4 +16,13 @@ Step.4 Create GKE cluster<br />
 
 Step.5 Create Memorystore for Redis<br />
 
-Step.6 Connecting a Redis instances from a Kubernetes Engine Closuter 
+Setting up a private cluster<br />
+https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters<br />
+Createing a VPC-native cluster<br />
+https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips<br />
+
+Step.6 Connecting a Redis instances from a Kubernetes Engine Closuter<br />
+
+https://cloud.google.com/memorystore/docs/redis/connect-redis-instance-gke<br />
+
+Step7. 
