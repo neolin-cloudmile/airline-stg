@@ -8,7 +8,9 @@ variable "db_maintenance_day" {}
 variable "db_maintenance_hour" {}
 variable "db_disk_size" {}
 variable "db_disk_type" {}
-variable "db_name_failover" {}
+variable "resource_timeout" {}
+variable "resource_timeout" {}
+
 
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
@@ -50,12 +52,17 @@ resource "google_sql_database_instance" "master" {
     disk_size = "${var_db_disk_size}"
     disk_type = "${var_db_disk_type}"
   }
+  timeouts {
+    create = "${var.resource_timeout}"
+    delete = "${var.resource_timeout}"
+    update = "${var.resource_timeout}"
+  }
 }
 resource "google_sql_database_instance" "failover_replica" {
   count = "1"
 
   depends_on = [ google_sql_database_instance.master ]
-  name             = "${var.db_name_failover}"
+  name             = "${var.db_name}-failover"
   region           = "${var.db_region}"
   database_version = "${var.db_version}"
   master_instance_name = "google_sql_database_instance.master.name"
@@ -74,5 +81,10 @@ resource "google_sql_database_instance" "failover_replica" {
     }
     disk_size = "${var.db_disk_size}"
     disk_type = "${var.db_disk_type}"
+  }
+  timeouts {
+    create = "${var.resource_timeout}"
+    delete = "${var.resource_timeout}" 
+    update = "${var.resource_timeout}"
   }
 }

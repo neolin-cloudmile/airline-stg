@@ -110,5 +110,5 @@ module "db-mysql" {
   db_maintenance_hour = "7"
   db_disk_size        = "100"
   db_disk_type        = "PD_HDD"
-  db_name_failover    = "mysql-stg-2-failover"
+  resource_timeout    = "20m"
 }
