@@ -52,5 +52,4 @@ resource "google_sql_database_instance" "master" {
 
   disk_size = "${var_db_disk_size}"
   disk_type = "${var_db_disk_type}"
-
 }
