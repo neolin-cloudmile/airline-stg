@@ -87,13 +87,22 @@ module "official-website-dev-cluster" {
 }
 # Create memorystore - redis
 module "memoryore-instance" {
-  source = "./redis"
-  redis_name = "myredis-asia-east1-1"
-  redis_tier = "STANDARD_HA"
-  redis_region = "asia-east1"
-  redis_zone = "asia-east1-a"
-  redis_alt_zone = "asia-east1-b"
-  redis_memory_size = 4 
+  source             = "./redis"
+  redis_name         = "myredis-asia-east1-stg-1"
+  redis_tier         = "STANDARD_HA"
+  redis_region       = "asia-east1"
+  redis_zone         = "asia-east1-a"
+  redis_alt_zone     = "asia-east1-b"
+  redis_memory_size  = "4" 
   redis_auth_network = "${google_compute_network.official-website-dev.self_link}"
-  redis_version = "REDIS_4_0"
+  redis_version      = "REDIS_4_0"
+}
+# Create Cloud SQL for MySQL, inlcude HA function, Private IP
+module "db-mysql" {
+  source             = "./database"
+  db_name            = "db-mysql-stg"
+  db_region          = "asia-east1"
+  db_version         = "MYSQL_5_7"
+  db_type            = "db-n1-standard-2"
+  db_private_network = "${google_compute_network.official-website-deb.name}"
 }
