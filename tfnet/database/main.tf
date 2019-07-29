@@ -11,7 +11,6 @@ variable "db_disk_type" {}
 variable "resource_timeout" {}
 variable "resource_timeout" {}
 
-
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
   purpose       = "VPC_PEERING"

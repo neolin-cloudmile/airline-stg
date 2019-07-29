@@ -100,7 +100,7 @@ module "memoryore-instance" {
 # Create Cloud SQL for MySQL, inlcude HA function, Private IP
 module "db-mysql" {
   source              = "./database"
-  db_name             = "db-mysql-stg"
+  db_name             = "db-mysql-stg1"
   db_region           = "asia-east1"
   db_version          = "MYSQL_5_7"
   db_type             = "db-n1-standard-2"
