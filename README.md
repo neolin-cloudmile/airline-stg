@@ -6,7 +6,7 @@ Terraform v0.12.2<br />
 + provider.google v2.11.0<br />
 
 ## Deployment
-Step.1 Enable "API & Services": Kubernetes Engine API, Cloud DNS API, Cloud Endpoints, Cloud Memorystore for Redis API,<br />
+Step.1 Enable "API & Services": Kubernetes Engine API, Cloud DNS API, Cloud Endpoints, Cloud Memorystore for Redis API,Service Networking API<br />
 
 Step.2 Create VPC, secondary IP of subnet for Pod, Services, Firewall Rules<br />
 
