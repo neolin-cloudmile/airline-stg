@@ -104,5 +104,5 @@ module "db-mysql" {
   db_region          = "asia-east1"
   db_version         = "MYSQL_5_7"
   db_type            = "db-n1-standard-2"
-  db_private_network = "${google_compute_network.official-website-dev.name}"
+  db_private_network = "${google_compute_network.official-website-dev.self_link}"
 }
