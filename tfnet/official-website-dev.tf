@@ -99,15 +99,16 @@ module "memoryore-instance" {
 }
 # Create Cloud SQL for MySQL, inlcude HA function, Private IP
 module "db-mysql" {
-  source             = "./database"
-  db_name            = "db-mysql-stg"
-  db_region          = "asia-east1"
-  db_version         = "MYSQL_5_7"
-  db_type            = "db-n1-standard-2"
-  db_private_network = "${google_compute_network.official-website-dev.self_link}"
-  db_backup_time = "04:00"
-  db_maintenance_day = "7"
+  source              = "./database"
+  db_name             = "db-mysql-stg"
+  db_region           = "asia-east1"
+  db_version          = "MYSQL_5_7"
+  db_type             = "db-n1-standard-2"
+  db_private_network  = "${google_compute_network.official-website-dev.self_link}"
+  db_backup_time      = "04:00"
+  db_maintenance_day  = "7"
   db_maintenance_hour = "7"
-  db_disk_size = "100"
-  db_disk_type = "PD_HDD"
+  db_disk_size        = "100"
+  db_disk_type        = "PD_HDD"
+  db_name_failover    = "mysql-stg-2-failover"
 }

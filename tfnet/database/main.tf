@@ -8,30 +8,29 @@ variable "db_maintenance_day" {}
 variable "db_maintenance_hour" {}
 variable "db_disk_size" {}
 variable "db_disk_type" {}
+variable "db_name_failover" {}
 
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
   purpose       = "VPC_PEERING"
-  address_type = "INTERNAL"
+  address_type  = "INTERNAL"
   prefix_length = 16
   network       = "${var.db_private_network}"
 }
 resource "google_service_networking_connection" "private_vpc_connection" {
-  network       = "${var.db_private_network}"
-  service       = "servicenetworking.googleapis.com"
+  network                 = "${var.db_private_network}"
+  service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = ["${google_compute_global_address.private_ip_address.name}"]
 }
 resource "google_sql_database_instance" "master" {
-  name = "${var.db_name}"
-  region = "${var.db_region}"
+  name             = "${var.db_name}"
+  region           = "${var.db_region}"
   database_version = "${var.db_version}"
 
-  depends_on = [
-    "google_service_networking_connection.private_vpc_connection"
-  ]
+  depends_on = [ "google_service_networking_connection.private_vpc_connection" ]
   
   settings {
-    tier = "${var.db_type}"
+    tier            = "${var.db_type}"
     disk_autoresize = "true"
     
     ip_configuration {
@@ -40,61 +39,40 @@ resource "google_sql_database_instance" "master" {
     }
     backup_configuration {
       binary_log_enabled = "true" 
-      enabled = "true"
-      start_time = "${var.db_backup_time}"
+      enabled            = "true"
+      start_time         = "${var.db_backup_time}"
     }
     maintenance_window {
-      day = "${var.db_maintenance_day}"
-      hour = "${var.db_maintenance_hour}"
+      day          = "${var.db_maintenance_day}"
+      hour         = "${var.db_maintenance_hour}"
       update_track = "stable"
     }
     disk_size = "${var_db_disk_size}"
     disk_type = "${var_db_disk_type}"
   }
 }
-resource "google_sql_database_instance" "read_replica" {
-  count = var.num_read_replicas
+resource "google_sql_database_instance" "failover_replica" {
+  count = "1"
 
-  depends_on = [
-    google_sql_database_instance.master,
-    google_sql_database_instance.failover_replica,
-    google_sql_database.default,
-    google_sql_user.default,
-  ]
-
-  provider         = "google-beta"
-  name             = "${var.name}-read-${count.index}"
-  project          = var.project
-  region           = var.region
-  database_version = var.engine
-
-  # The name of the instance that will act as the master in the replication setup.
-  master_instance_name = google_sql_database_instance.master.name
+  depends_on = [ google_sql_database_instance.master ]
+  name             = "${var.db_name_failover}"
+  region           = "${var.db_region}"
+  database_version = "${var.db_version}"
+  master_instance_name = "google_sql_database_instance.master.name"
 
   replica_configuration {
-    # Specifies that the replica is not the failover target.
-    failover_target = false
+    failover_target = "true"
   }
-
   settings {
-    tier                        = var.machine_type
-    authorized_gae_applications = var.authorized_gae_applications
-    disk_autoresize             = var.disk_autoresize
-
+    crash_safe_replication = "true"
+    tier                   = "${var.db_type}"
+    disk_autoresize        = "true"
+    
     ip_configuration {
-      dynamic "authorized_networks" {
-        for_each = var.authorized_networks
-        content {
-          name  = authorized_networks.value.name
-          value = authorized_networks.value.value
-        }
-      }
-
-      ipv4_enabled    = var.enable_public_internet_access
-      private_network = var.private_network
-      require_ssl     = var.require_ssl
+      ipv4_enabled    = "false"
+      private_network = "${var.db_private_network}"
     }
-    disk_size = var.disk_size
-    disk_type = var.disk_type
+    disk_size = "${var.db_disk_size}"
+    disk_type = "${var.db_disk_type}"
   }
 }
