@@ -3,6 +3,11 @@ variable "db_region" {}
 variable "db_version" {}
 variable "db_type" {}
 variable "db_private_newtork" {}
+variable "db_backup_time" {}
+variable "db_maintenance_day" {}
+variable "db_maintenance_hour" {}
+variable "db_disk_size" {}
+variable "db_disk_type" {}
 
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
@@ -34,4 +39,18 @@ resource "google_sql_database_instance" "master" {
       private_network = "${var.db_private_network}" 
     }
   }
+  backup_configuration {
+    binary_log_enabled = "true" 
+    enabled = "true"
+    start_time = "${var.db_backup_time}"
+  }
+  maintenance_window {
+    day = "${var.db_maintenance_day}"
+    hour = "${var.db_maintenance_hour}"
+    update_track = "stable"
+  }
+
+  disk_size = "${var_db_disk_size}"
+  disk_type = "${var_db_disk_type}"
+
 }
