@@ -28,4 +28,22 @@ Step.6 Connecting a Redis instances from a Kubernetes Engine Closuter<br />
 
 https://cloud.google.com/memorystore/docs/redis/connect-redis-instance-gke<br />
 
-Step7. 
+Step7.Create Cloud SQL for MySQL<br />
+
+Cloud SQL - Doc - MySQL - Configuring private IP connectivity<br />
+https://cloud.google.com/sql/docs/mysql/configure-private-ip<br />
+Cloud SQL - Doc - MySQL - Overview of backups<br />
+https://cloud.google.com/sql/docs/mysql/backup-recovery/backups<br />
+Cloud SQL - Doc - MySQL - Configuring external replicas<br />
+https://cloud.google.com/sql/docs/mysql/replication/configure-external-replica<br />
+
+Step8. Connecting from Google Kubernetes Engine<br />
+
+Cloud SQL - Doc - MySQL - Connecting from Google Kubernetes Enginer<br />
+https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine
+
+Step9.Quickstart for using the proxy for local testing<br />
+
+Cloud SQL - Doc - MySQL - Quickstart for using the proxy for local testing<br />
+https://cloud.google.com/sql/docs/mysql/quickstart-proxy-test<br />
+
