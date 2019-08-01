@@ -6,11 +6,6 @@ variable "redis_alt_zone" {}
 variable "redis_memory_size" {}
 variable "redis_auth_network" {}
 variable "redis_version" {}
-variable "enable_apis" {
-  description = "Enable required APIs for Cloud Memorystore."
-  default     = "true"
-}
-
 
 resource "google_redis_instance" "cache" {
   name                    = "${var.redis_name}"
