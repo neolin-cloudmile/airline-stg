@@ -2,13 +2,12 @@ variable "db_name" {}
 variable "db_region" {}
 variable "db_version" {}
 variable "db_type" {}
-variable "db_private_newtork" {}
+variable "db_private_network" {}
 variable "db_backup_time" {}
 variable "db_maintenance_day" {}
 variable "db_maintenance_hour" {}
 variable "db_disk_size" {}
 variable "db_disk_type" {}
-variable "resource_timeout" {}
 variable "resource_timeout" {}
 
 resource "google_compute_global_address" "private_ip_address" {
@@ -48,8 +47,8 @@ resource "google_sql_database_instance" "master" {
       hour         = "${var.db_maintenance_hour}"
       update_track = "stable"
     }
-    disk_size = "${var_db_disk_size}"
-    disk_type = "${var_db_disk_type}"
+    disk_size = "${var.db_disk_size}"
+    disk_type = "${var.db_disk_type}"
   }
   timeouts {
     create = "${var.resource_timeout}"
